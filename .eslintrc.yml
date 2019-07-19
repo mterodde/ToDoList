@@ -1,0 +1,16 @@
+extends: ["standard", "prettier", "eslint:recommended", "plugin:react/recommended", "plugin:fetch/recommended"]
+
+plugins: 
+   - mocha
+   - react
+   - fetch
+
+rules: 
+   mocha/no-exclusive-tests: error
+   react/jsx-uses-react: error
+   react/jsx-uses-vars: error
+   no-console: off
+
+parserOptions:
+   ecmaFeatures:
+      jsx: true
