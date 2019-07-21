@@ -1,4 +1,4 @@
-const User = require("../client/js/modell/userModel");
+const User = require("../client/js/modell/user");
 var assert = require("assert");
 
 const testUserDescription = {

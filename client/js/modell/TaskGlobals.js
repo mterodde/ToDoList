@@ -1,12 +1,14 @@
 const TASK_STATUS_VALUES = {
-    initialized: 0,
-    running: 1,
-    endded: 2
+    created: 1,
+    running: 2,
+    endded: 3
 };
 
 const INITIAL_TASK = {
-    id: '',
+    /* unique id to identify the task on the client and on the server side */
+    taskId: '',
     description: '',
+    /* describes the tasks lifecycle (created -> running -> ended) */
     staus: TASK_STATUS_VALUES.initialized,
     ownerId: '',
     creationDate: '',
@@ -14,15 +16,22 @@ const INITIAL_TASK = {
     endDate: ''
 }
 
-const PERSISTANCE_STATUS_VALUES = {
+const PERSISTENCE_STATUS_VALUES = {
     notPersisted: 0,
     inProgress: 1,
     persisted: 2,
     persistanceFailed: 99
 }
 
+const TASK_RETRIEVALSTATUS = {
+    retrievalRunning: 1,
+    retrievalFinished: 2,
+    retrievalFailed: 0
+}
+
 module.exports = {
-    TASK_STATUS_VALUES:TASK_STATUS_VALUES,
-    NITIAL_TASK: INITIAL_TASK,
-    PERSISTANCE_STATUS_VALUES:PERSISTANCE_STATUS_VALUES
+    TASK_STATUS_VALUES,
+    INITIAL_TASK,
+    PERSISTENCE_STATUS_VALUES,
+    TASK_RETRIEVALSTATUS
 }

@@ -4,17 +4,21 @@
 const TASK_GLOBALS = require('./TaskGlobals');
 
 const INITIAL_TASK = TASK_GLOBALS.INITIAL_TASK;
-const PERSISTANCE_STATUS_VALUES = TASK_GLOBALS.PERSISTANCE_STATUS_VALUES;
+const PERSISTENCE_STATUS_VALUES = TASK_GLOBALS.PERSISTENCE_STATUS_VALUES;
 
 /* Class to be used, to fully describe a task item 
     consisting of:
-        - taskId
-        - ownerId of task owner
+        - task id
+        - task status
+        - Id of task owner
         - task creation date
         - task start date
         - task end date
         - task description
-        
+    
+    The attributes staus, creationDate, startDate and endDate as well as 
+    the class attribute _persistStatus are for further use.
+    These attributes are not used by the current version of the application
 */
 
 
@@ -23,11 +27,15 @@ class Task {
         /* a shallow copy of the task description object is sufficent
             since it has no nested objects at all */
         this.taskData = {...taskDecription};
-        this._persistStatus = PERSISTANCE_STATUS_VALUES.notPersisted;
+        this._persistStatus = PERSISTENCE_STATUS_VALUES.notPersisted;
     }
 
-    set persistStatus(stateInfo){
-        this._persistStatus = stateInfo;
+    set persistStatus(newStatus){
+        this._persistStatus = newStatus;
+    }
+
+    set status(newStatus){
+        this.taskData.status = newStatus;
     }
 
     set start(date = Date.now()){
@@ -39,7 +47,11 @@ class Task {
     }
 
     get id() {
-        return this.taskData.id;
+        return this.taskData.taskId;
+    }
+
+    get status() {
+        return this.taskData.status;
     }
 
     get description(){
@@ -66,12 +78,16 @@ class Task {
         return this._persistStatus;
     }
 
-    get serializedData(){
+    get serialized(){
         return JSON.stringify(this.taskData);
     }
 
-    update(dataforUpdate){
-        this.taskData = {...this.taskData, ...dataforUpdate};
+    update(dataForUpdate){
+        /* 
+            substitute current taskData attribute values by the 
+            attribute values supplied by the dataForUpdate object
+        */
+        this.taskData = {...this.taskData, ...dataForUpdate};
     }
 }
 

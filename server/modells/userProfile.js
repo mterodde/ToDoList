@@ -2,6 +2,7 @@
 
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const db_connect_defs = require('./dbConnectionConstants');
 const SALT_WORK_FACTOR = 5;
 const Schema = mongoose.Schema;
 
@@ -52,7 +53,7 @@ ProfileSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-const profileDb = mongoose.connection.useDb('MatrixUserProfiles');
-const Profile = profileDb.model('Profile', ProfileSchema);
+const profileDb = mongoose.connection.useDb(db_connect_defs.DATABASE_NAME);
+const Profile = profileDb.model(db_connect_defs.USER_PROFILE_SCHEMA, ProfileSchema);
 
 module.exports = Profile;

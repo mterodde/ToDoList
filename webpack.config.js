@@ -2,10 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './public/js/controller/mainController.js',
+    entry: './client/js/controller/mainController.js',
     mode: "development",
     output: {
-        path: path.resolve(__dirname, 'build'),
+        path: path.resolve(__dirname, 'server/public'),
         filename: 'app.bundle.js'
     },
     devServer: {
