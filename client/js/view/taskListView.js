@@ -20,8 +20,8 @@ export  class TaskListView extends React.Component {
 
     render() {
         return (
-            <section id="resultArea">
-                <ListGroup id="taskList">
+            <section id="resultArea" >
+                <ListGroup id="taskList" title="List of my current tasks">
                     {this.state.tasks.map(task => { return (
                     <ListGroupItem id={task.id} key={task.id}>
                         { task.description }

@@ -16,7 +16,7 @@ import LoginView from "../view/loginView";
 /* 
   import the modells
 */
-import { INITIAL_TASK, TASK_RETRIEVALSTATUS } from "../modell/TaskGlobals";
+import { INITIAL_TASK, TASK_RETRIEVALSTATUS, TASK_DEMO_LIST } from "../modell/TaskGlobals";
 import { AUTH_RETRIEVALSTATUS } from "../modell/authGlobals";
 import TaskBucket from "../modell/TaskBucket";
 import UserModell from "../modell/user";
@@ -27,12 +27,9 @@ class MainView extends React.Component {
 
     this.myEnvironment = "NO_ENV";
 
-    this.userHandle = new UserModell(this.processChangedUserState, `http:${location.host}:${location.port}/user`);
-    // this.taskBucketManager = new TaskBucket(this.processChangedBucketState, this.userHandle, `http:${location.host}:${location.port}/toDo`);
-    this.taskBucketManager = new TaskBucket(this.processChangedBucketState);
-
     this.state = {
-      taskList: [],
+      taskList: TASK_DEMO_LIST,
+      currentUser: null,
       showLogin: false,
       showTaskList: false,
       showWait: false,
@@ -45,10 +42,39 @@ class MainView extends React.Component {
 
     this.handleNewTask = this.handleNewTask.bind(this);
 
+    this.handleNavigationEvent = this.handleNavigationEvent.bind(this);
     this.handleLoginInput = this.handleLoginInput.bind(this);
     this.handleRegistrationInput = this.handleRegistrationInput.bind(this);
 
+    this.userHandle = new UserModell(this.processChangedUserState, `http://${location.host}/user`);
+    // this.taskBucketManager = new TaskBucket(this.processChangedBucketState, this.userHandle, `http://${location.host}/toDo`);
+    this.taskBucketManager = new TaskBucket(this.processChangedBucketState);
+
   }
+
+  /***************************************************************************
+                           Navigation event handler
+   ***************************************************************************/
+  /*
+        Handles the selection of the type of calculation in the top navigation
+  */
+  handleNavigationEvent(e) {
+
+    switch (e.currentTarget.id) {
+      case "login":
+        this.setState({ showLogin: true });
+        break;
+
+      case "logoff":
+        this.userHandle.loggoff();
+        this.setState({ currentUser: null });
+        break;
+
+      default:
+        break;
+    }
+  }
+
 
   /***************************************************************************
                             Handle status changes from modell
@@ -61,7 +87,10 @@ class MainView extends React.Component {
   processChangedUserState(status, err) {
     switch (status) {
       case AUTH_RETRIEVALSTATUS.loginSuccessfull:
-        this.setState({ showLogin: false });
+        this.setState({
+          showLogin: false,
+          currentUser: this.userHandle.userData
+        });
         break;
 
       case AUTH_RETRIEVALSTATUS.loginFailed:

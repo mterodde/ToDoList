@@ -4,6 +4,8 @@ const ServiceHandler = require('./serviceHandler');
 class UserAuth extends ServiceHandler {
     constructor(serviceURI, callback) {
         super(serviceURI, callback);
+
+        this.decodeResponse = this.decodeResponse.bind(this);
     }
 
     /* 
@@ -24,13 +26,13 @@ class UserAuth extends ServiceHandler {
     registerUser(userCredentials) {
         let headers = this.buildHeaders(userCredentials);
         let options = this.buildOptions(headers, 'POST');
-        this.callService('login',options);
+        this.callService('register',options);
     }
 
     loginUser(userCredentials) {
         let headers = this.buildHeaders(userCredentials);
         let options = this.buildOptions(headers, 'GET');
-        this.callService('register',options);
+        this.callService('login',options);
     }
 
     buildHeaders(userCredentials) {

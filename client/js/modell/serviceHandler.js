@@ -8,6 +8,8 @@ class ServiceHandler {
     constructor(serviceURI, callback) {
         this.serviceURI = serviceURI;
         this.callback = callback;
+
+        this.decodeResponse.bind(this);
     }
 
     /*** Declaration of private class members ***/
@@ -15,6 +17,7 @@ class ServiceHandler {
     /* 
         For new, we post all errors that occurred, back to the caller
     */
+ 
     [processError](err) {
         this.callback(err);
     }

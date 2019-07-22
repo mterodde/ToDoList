@@ -11,7 +11,6 @@ export default class MyNavbar extends React.Component {
       serviceConfiguration: this.props.serviceConfiguration
     }
 
-    this.navTopics = this.navTopics.bind(this);
     this.userStatus = this.userStatus.bind(this);
   }
 
@@ -24,49 +23,19 @@ export default class MyNavbar extends React.Component {
     return null;
   }
 
-  navTopics() {
-    return (
-      this.state.serviceConfiguration.map((navConfig, key) => {
-        let id1 = key;
-        if (navConfig.title !== "User") {
-          return (
-            <NavDropdown title={navConfig.title} key={key} id="basic-nav-dropdown">
-              {navConfig.items.map((navItem, key) => {
-                if (navItem.status === 'production' || this.props.currentEnv === 'local') {
-                  return (
-                    <NavDropdown.Item
-                      key={key}
-                      id={`${id1};${key}`}
-                      disabled={navItem.needsLogin && this.state.currentUser === null}
-                      onClick={this.props.eventHandler}>
-                      {navItem.opTitle}
-                    </NavDropdown.Item>);                    
-                } else {
-                  return null;
-                }
-              })}
-            </NavDropdown>
-          )
-        }
-        return null;
-      })
-    )
-  }
-
   userStatus() {
     let userConfig = this.state.serviceConfiguration.find((navConfig) => { return navConfig.title === "User" });
 
     return (
       <NavDropdown
         title={
-          this.state.currentUser && this.state.currentUser.loggedIn ?
+          this.state.currentUser ?
             <Image width="30px" className="img-responsive" src="/images/smileyAwake.png" /> :
             <Image width="30px" className="img-responsive" src="/images/smileySleeping.jpg" />
         }
       >
         {userConfig.items.map((navItem, key) => {
-          // TODO: Substitute the workaround of hardcoding the id-prefix to '0'
-          return (<NavDropdown.Item key={key} id={`0;${key}`} onClick={this.props.eventHandler}>{navItem.opTitle}</NavDropdown.Item>);
+          return (<NavDropdown.Item key={key} id={navItem.opTitle} onClick={this.props.eventHandler}>{navItem.opTitle}</NavDropdown.Item>);
         })}
       </NavDropdown>
     )
@@ -75,11 +44,10 @@ export default class MyNavbar extends React.Component {
   render() {
     return (
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Matrix-Calculator</Navbar.Brand>
+        <Navbar.Brand href="#home">Things to be done</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            {this.navTopics()}
           </Nav>
           <Nav >
             {this.userStatus()}

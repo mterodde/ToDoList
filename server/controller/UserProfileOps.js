@@ -3,7 +3,9 @@ const JWT = require('jsonwebtoken');
 const Profile = require('../modells/userProfile');
 
 function newUser(req, res) {
-    let authData = JWT.verify(req.get('Authorization').split(" ")[1], 'MatrixSecret');
+    let authData = JWT.verify(req.get('Authorization').split(" ")[1], 'UserSecret');
+    console.log(`login date for user: ${authData} recieved`);
+    
     if (authData.email &&
         authData.username &&
         authData.password) {
@@ -23,7 +25,7 @@ function newUser(req, res) {
                     id: user.id
                 }
                 res.json({
-                    user: JWT.sign(userData, "MatrixSecret")
+                    user: JWT.sign(userData, "UserSecret")
                 });
             }
         });
@@ -31,7 +33,7 @@ function newUser(req, res) {
 }
 
 function signin(req, res) {
-    let authData = JWT.verify(req.get('Authorization').split(" ")[1], 'MatrixSecret');
+    let authData = JWT.verify(req.get('Authorization').split(" ")[1], 'UserSecret');
     if (authData.email &&
         authData.password) {
 
@@ -58,7 +60,7 @@ function signin(req, res) {
                             id: user.id
                         }
                         res.json({
-                            user: JWT.sign(userData, "MatrixSecret")
+                            user: JWT.sign(userData, "UserSecret")
                         });
                     } else {
                         res.json({

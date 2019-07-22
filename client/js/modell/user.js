@@ -7,17 +7,19 @@ const {
 
 const UserAuth = require('../modell/authorize');
 
-const processServiceResult = Symbol('processServiceResult');
+// const processServiceResult = Symbol('processServiceResult');
 
 class UserModell {
     constructor(sendStateFunc, authServiceURI = null) {
         /* reference to a function used to communicate status changes to the main controller */
         this.sendState = sendStateFunc;
 
-        this.authService = new UserAuth(authServiceURI, this[processServiceResult]);
-
-        this.userData = INITIAL_USER_DATA;
+        this._userData = INITIAL_USER_DATA;
         this.loginStatus = LOGIN_STATUS_VALUES.loggedOf;
+
+        this.processServiceResult = this.processServiceResult.bind(this);
+
+        this.authService = new UserAuth(authServiceURI, this.processServiceResult);
     }
 
     /*** Declaration of private class members ***/
@@ -25,7 +27,8 @@ class UserModell {
     /* 
         process any answer from the authorization service
     */
-    [processServiceResult](err, res) {
+   processServiceResult(err, res){
+    // [processServiceResult](err, res) {
         if (err) {
             console.error(err);
             this.loginStatus = LOGIN_STATUS_VALUES.loginFailed;
@@ -33,12 +36,12 @@ class UserModell {
             /* Tell the main controller that the login / registration of the user failed */
             this.sendState(AUTH_RETRIEVALSTATUS.loginFailed, err);
         } else {
-            if (res.user) {
+            if (res) {
                 /* 
                     In case of a successfull login, the auth service replies with a
                     full user data set which we store in this user object now.
                 */
-                this.userData = { ...res.user };
+                this._userData = { ...res };
                 this.loginStatus = LOGIN_STATUS_VALUES.loggedIn;
             }
             /* Tell the main controller that the login / registration for the user was successfull */
@@ -49,15 +52,20 @@ class UserModell {
 
 
     get id() {
-        return (this.userData.id);
+        return (this._userData.id);
     }
 
     get name() {
-        return (this.userData.name);
+        return (this._userData.name);
     }
 
     get email() {
-        return (this.userData.email);
+        return (this._userData.email);
+    }
+
+    get userData(){
+        let { id, ...user } = this._userData;
+        return user;
     }
 
     get isLoggedIn() {
@@ -65,11 +73,11 @@ class UserModell {
     }
 
     set name(name) {
-        this.userData.name = name;
+        this._userData.name = name;
     }
 
     set email(email) {
-        this.userData.email = email;
+        this._userData.email = email;
     }
 
     loggoff() {

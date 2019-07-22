@@ -29,9 +29,37 @@ const TASK_RETRIEVALSTATUS = {
     retrievalFailed: 0
 }
 
+const TASK_DEMO_LIST = [
+    {
+        id: 1,
+        description: "do something"
+    },
+    {
+        id: 2,
+        description: "do something else"
+    },
+    {
+        id: 3,
+        description: "do nothing"
+    },
+    {
+        id: 4,
+        description: "do nothing more"
+    },
+    {
+        id: 5,
+        description: "do the right thing"
+    },
+    {
+        id: 6,
+        description: "do it now"
+    },
+]
+
 module.exports = {
     TASK_STATUS_VALUES,
     INITIAL_TASK,
     PERSISTENCE_STATUS_VALUES,
-    TASK_RETRIEVALSTATUS
+    TASK_RETRIEVALSTATUS,
+    TASK_DEMO_LIST
 }
